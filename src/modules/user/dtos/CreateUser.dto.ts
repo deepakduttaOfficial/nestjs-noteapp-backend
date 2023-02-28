@@ -5,7 +5,7 @@ export class CreateUser {
 
   @IsNotEmpty()
   @IsEmail()
-  email: string;
+  username: string;
 
   @IsNotEmpty()
   @Length(4, 20)

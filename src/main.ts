@@ -13,6 +13,7 @@ async function bootstrap() {
   app.enableCors({ origin: '*' });
 
   // App listening
-  await app.listen(3000, () => console.log('App running'));
+  const PORT = process.env.PORT || 3000;
+  await app.listen(PORT, () => console.log('App running'));
 }
 bootstrap();

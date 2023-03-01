@@ -11,8 +11,17 @@ datasource db {
 }
 
 model users {
-  id       String @id @default(auto()) @map("_id") @db.ObjectId
+  id       String  @id @default(auto()) @map("_id") @db.ObjectId
   name     String
-  username String @unique
+  username String  @unique
   password String
+  notes    notes[]
+}
+
+model notes {
+  id          String @id @default(auto()) @map("_id") @db.ObjectId
+  title       String
+  description String
+  user        users  @relation(fields: [usersId], references: [id])
+  usersId     String @db.ObjectId
 }

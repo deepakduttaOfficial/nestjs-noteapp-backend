@@ -8,12 +8,12 @@ async function bootstrap() {
 
   // Add validation for entire application
   app.useGlobalPipes(new ValidationPipe());
-
+  const url = process.env.FRONTEND_URL;
   // Cors
-  app.enableCors({ origin: '*' });
+  app.enableCors({ origin: url });
 
   // App listening
   const PORT = process.env.PORT || 3000;
-  await app.listen(PORT, () => console.log('App running'));
+  await app.listen(PORT, () => console.log(`App running`));
 }
 bootstrap();

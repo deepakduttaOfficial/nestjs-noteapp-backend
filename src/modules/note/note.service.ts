@@ -23,7 +23,7 @@ export class NoteService {
   }
 
   // Get notes based on user
-  async getNote(req) {
+  async getNotes(req) {
     try {
       const { id } = req.user;
       const notes = await this.prisma.notes.findMany({
@@ -31,6 +31,25 @@ export class NoteService {
         include: { user: true },
       });
       return notes;
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  // Get single note based on user
+  async getNote(req, params) {
+    try {
+      const { id } = req.user;
+      const note = await this.prisma.notes.findUnique({
+        where: { id: params.id },
+      });
+      if (note.usersId !== id) {
+        throw new HttpException(
+          'Not authenticate user',
+          HttpStatus.BAD_REQUEST,
+        );
+      }
+      return note;
     } catch (error) {
       console.log(error);
     }

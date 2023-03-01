@@ -27,11 +27,18 @@ export class NoteController {
   // gets Notes
   @UseGuards(JwtAuthGuard)
   @Get('gets')
-  getNote(@Request() req) {
-    return this.noteService.getNote(req);
+  getNotes(@Request() req) {
+    return this.noteService.getNotes(req);
   }
 
-  // gets Notes
+  // get Single Notes
+  @UseGuards(JwtAuthGuard)
+  @Get('get/:id')
+  getNote(@Request() req, @Param() params) {
+    return this.noteService.getNote(req, params);
+  }
+
+  // update Notes
   @UseGuards(JwtAuthGuard)
   @Put('update/:id')
   updateNote(

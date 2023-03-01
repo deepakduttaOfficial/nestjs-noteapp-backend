@@ -1,7 +1,8 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
-import { SignUpInterface } from 'src/utils/user.interface';
+
 import { Prisma } from '@prisma/client';
 import { PrismaService } from 'src/prisma.service';
+import * as bcrypt from 'bcrypt';
 
 @Injectable()
 export class UserService {
@@ -19,8 +20,12 @@ export class UserService {
       if (isUserExist)
         throw new HttpException('User alreay exist', HttpStatus.CONFLICT);
 
+      // Hashing password
+      const saltOrRounds = 10;
+      const hash = await bcrypt.hash(password, saltOrRounds);
+
       const newUser = await this.prisma.users.create({
-        data: { name, password, username },
+        data: { name, password: hash, username },
       });
 
       return newUser;
@@ -28,8 +33,4 @@ export class UserService {
       throw new HttpException(error.message, HttpStatus.INTERNAL_SERVER_ERROR);
     }
   }
-
-  // async login(req) {
-  //   return req.user;
-  // }
 }
